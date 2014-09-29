@@ -85,7 +85,7 @@ nmap Q gqip
 vmap Q gqip
 " insert newline non-insert
 nmap <CR> o<Esc>
-nmap <S-Enter> O<Esc>
+nmap <Backspace> O<Esc>
 
 " Note: Move to the next tab! By Questor
 nnoremap <silent> [5;5~ :tabnext<cr>
