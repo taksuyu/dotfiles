@@ -12,3 +12,5 @@ alias ll='la -l'
 
 # Lock computer, disable monitor, and turn dpms off again on resume
 alias monoff='xset dpms force off && slock && xset -dpms'
+
+alias scrot='scrot -e "mv $f ~/scrot"'
