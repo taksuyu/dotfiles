@@ -1,0 +1,14 @@
+Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+       , bgColor = "#000000"
+       , fgColor = "#BFBFBF"
+       , position = Top
+       , lowerOnStart = True
+       , commands = [ Run Date "%a %F %T %Z" "date" 10
+                    , Run Cpu [] 10
+                    , Run Memory [] 10
+                    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }{ %cpu% - %memory% - %date%"
+       }
