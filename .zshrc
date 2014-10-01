@@ -18,6 +18,9 @@ typeset -U path
 export USER_BIN="~/.bin"
 path=(~/.bin $path)
 
+# cabal
+path=(~/.cabal/bin $path)
+
 # node
 path=(~/node_modules/.bin $path)
 
