@@ -14,3 +14,8 @@ alias ll='la -l'
 alias monoff='xset dpms force off && slock && xset -dpms'
 
 alias scrot='scrot -e "mv $f ~/scrot"'
+
+# vcsh
+alias dots='vcsh dotfiles status --untracked-files=no -bs'
+alias dotc='vcsh dotfiles commit'
+alias dotp='vcsh dotfiles push'
