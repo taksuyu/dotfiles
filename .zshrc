@@ -11,21 +11,8 @@ HISTFILE=~/.histfile
 HISTSIZE=50
 SAVEHIST=50
 
-# unique items in path
-typeset -U path
-
-# user programs
-export USER_BIN="~/.bin"
-path=(~/.bin $path)
-
-# cabal
-path=(~/.cabal/bin $path)
-
-# node
-path=(~/node_modules/.bin $path)
-
 # envoy
-eval $(envoy -p)
+[ -f /usr/bin/envoy ] && eval $(envoy -p)
 
 # git file completion
 function __git_files
