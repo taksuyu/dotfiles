@@ -19,3 +19,8 @@ alias scrot='scrot -e "mv $f ~/scrot"'
 alias dots='vcsh dotfiles status --untracked-files=no -bs'
 alias dotc='vcsh dotfiles commit'
 alias dotp='vcsh dotfiles push'
+
+# cabal
+alias cb='cabal build'
+alias ccb='clear; cabal build'
+alias cr='cabal run'
