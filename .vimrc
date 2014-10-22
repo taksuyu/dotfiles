@@ -43,7 +43,6 @@ let g:session_autosave = 'no'
 " vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 syntax enable
-filetype indent plugin on
 
 set number
 set laststatus=2
@@ -68,12 +67,6 @@ set noswapfile
 set incsearch
 
 autocmd FileType * setlocal formatoptions-=c formatoptions-=o formatoptions-=r
-
-setlocal autoindent
-setlocal expandtab
-setlocal shiftwidth=4
-setlocal smarttab
-setlocal tabstop=4
 
 " center screen
 nmap <space> zz
