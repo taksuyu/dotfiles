@@ -3,7 +3,7 @@ typeset -U path
 
 function add_existing_path()
 {
-    if (( -d $1 ))
+    if [[ -d $1 ]]
     then
 	path=($1 $path)
     fi
