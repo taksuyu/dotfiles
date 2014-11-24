@@ -19,6 +19,7 @@
        auto-mode-alist))
 
 ;; package management
+(require 'package)
 (setq package-archives
       (append
        '(("marmalade" . "http://marmalade-repo.org/packages/")
@@ -37,7 +38,8 @@
  '(haskell-indent-spaces 2)
  '(haskell-mode-hook (quote (turn-on-haskell-indentation)))
  '(haskell-program-name "cabal repl")
- '(haskell-stylish-on-save t))
+ '(haskell-stylish-on-save t)
+ '(inhibit-startup-screen t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
