@@ -11,9 +11,6 @@ HISTFILE=~/.histfile
 HISTSIZE=50
 SAVEHIST=50
 
-# envoy
-[ -f /usr/bin/envoy ] && eval $(envoy -p)
-
 # git file completion
 function __git_files
 {
