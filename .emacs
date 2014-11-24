@@ -19,7 +19,6 @@
        auto-mode-alist))
 
 ;; package management
-(require 'package)
 (setq package-archives
       (append
        '(("marmalade" . "http://marmalade-repo.org/packages/")
