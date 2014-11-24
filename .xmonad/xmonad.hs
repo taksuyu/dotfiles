@@ -4,21 +4,15 @@ import XMonad.Actions.SwapWorkspaces
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.Warp
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ICCCMFocus
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
-import XMonad.Prompt
-import XMonad.Prompt.Shell
-import XMonad.Prompt.XMonad
 import qualified XMonad.StackSet as W
 
 import qualified Data.Map as Map
 
--- Main
-main :: IO ()
 main = xmonad =<<
 
     statusBar
@@ -33,7 +27,6 @@ main = xmonad =<<
         -- xmonad config
         defaultConfig'
 
--- Config
 defaultConfig' = defaultConfig
 
     { keys = keys'
@@ -41,7 +34,6 @@ defaultConfig' = defaultConfig
     , manageHook = manageHook'
     , terminal = "termite"
     , modMask = mod4Mask  -- Start key
-    , logHook = takeTopFocus
     }
 
 -- Toggle bar with grave key
@@ -55,26 +47,24 @@ xmobarPP' = xmobarPP
 -- Combine custom keys with the defaults
 keys' x = modifiedKeys x `Map.union` keys defaultConfig x
 
--- Layout Hook
 layoutHook' = smartBorders (normal ||| Grid ||| full) where
 
     normal = Tall (1) (3/100) (1/2)
     full = noBorders (fullscreenFull Full)
 
--- Manage Hook
 manageHook' = composeAll
 
-    [ isFullscreen --> (doF W.focusDown <+> doFullFloat)]
+    [ isFullscreen --> (doF W.focusDown <+> doFullFloat)
+    ]
 
 -- Custom key bindings
 modifiedKeys conf@( XConfig {XMonad.modMask = modm}) = Map.fromList $
-
-    -- Function keys
-    [ ((modm, xK_F3), shellPrompt defaultXPConfig)
-    , ((modm, xK_F12), xmonadPrompt defaultXPConfig)
-
+ 
     -- Stop mouse from wiggling when I got my hands on the keyboard switching windows
-    , ((modm, xK_Tab), windows W.focusDown >> warpToWindow 0.99 0.99)
+    [ ((modm, xK_Tab), windows W.focusDown >> warpToWindow 0.99 0.99)
+
+    -- Spawn emacs and have it persist through systemd
+    , ((modm, xK_backslash), spawn "emacsclient -c")
     ]
 
     ++
