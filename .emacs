@@ -14,7 +14,8 @@
        '(("\\.purs\\'" . haskell-mode)
 	 ("\\.zsh\\'" . shell-script-mode)
          ("\\.install\\'" . shell-script-mode)
-	 ("PKGBUILD\\.*\\'" . shell-script-mode))
+	 ("PKGBUILD\\.*\\'" . shell-script-mode)
+	 ("\\.md\\'" . markdown-mode))
        auto-mode-alist))
 
 ;; package management
