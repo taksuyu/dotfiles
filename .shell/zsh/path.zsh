@@ -10,8 +10,11 @@ function add_existing_path()
 }
 
 # user programs
-export USER_BIN="~/.bin"
-add_existing_path $USER_BIN
+USER_BIN="~/.bin"
+if add_existing_path $USER_BIN
+then
+    export USER_BIN
+fi
 
 # cabal
 add_existing_path ~/.cabal/bin
