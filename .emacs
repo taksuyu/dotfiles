@@ -1,14 +1,16 @@
 ;; Package management should be enabled
 (when (>= emacs-major-version 24)
   (require 'package)
-  (setq 'package-archives
+  (setq package-archives
 	(append '(("org"       . "http://orgmode.org/elpa/")
 		  ("melpa"     . "http://melpa.milkbox.net/packages/")
 		  ("marmalade" . "http://marmalade-repo.org/packages/")
 		 )
 		package-archives))
+
   (package-initialize)
 
+  ;; List of packages in use
   (setq package-list '(flycheck-haskell
 		       ghc
 		       haskell-mode
@@ -22,9 +24,15 @@
   (when (not package-archive-contents)
     (package-refresh-contents))
 
+  ;; Taken from bitemyapp
+  ;; https://github.com/bitemyapp/dotfiles/blob/master/.emacs
+  ;;
+  ;; Install anything that isn't
   (dolist (package package-list)
-    (when (not (package-install-p package))
+    (when (not (package-installed-p package))
       (package-install package)))
+
+) ;; end package management
   
 ;; set backup file directory which prevents the filesystem being
 ;; polluted with #file#
