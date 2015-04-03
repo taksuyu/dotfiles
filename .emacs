@@ -76,6 +76,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;
 
 
+;; magit keys
+(global-set-key (kbd "C-c m s") 'magit-status)
+
 ;; flycheck toggle
 (global-set-key (kbd "C-x \\") 'flycheck-mode)
 
@@ -90,7 +93,7 @@
 
 ;; haskell
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-mode-hook 'turn-on-hi2)
+;(add-hook 'haskell-mode-hook 'turn-on-hi2)
 
 (eval-after-load 'haskell-mode
   '(progn				  
