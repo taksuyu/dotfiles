@@ -11,9 +11,11 @@
   (package-initialize)
 
   ;; List of packages in use
-  (setq package-list '(flycheck-haskell
+  (setq package-list '(ensime
+                       flycheck-haskell
 		       ghc
 		       haskell-mode
+		       js2-mode
 		       magit
 		       markdown-mode
 		       purescript-mode
@@ -57,6 +59,7 @@
  '(haskell-process-type (quote cabal-repl))
  '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)
+ '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(purescript-mode-hook (quote (turn-on-purescript-indentation)))
  '(safe-local-variable-values
@@ -77,21 +80,26 @@
 
 
 ;; magit keys
+(require 'magit)
 (global-set-key (kbd "C-c m s") 'magit-status)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; flycheck toggle
+(require 'flycheck)
 (global-set-key (kbd "C-x \\") 'flycheck-mode)
 
 ;; filetypes
 (setq auto-mode-alist
       (append
-       '(("\\.zsh\\'" . shell-script-mode)
-         ("\\.install\\'" . shell-script-mode)
+       '(("\\.zsh\\'"       . shell-script-mode)
+         ("\\.install\\'"   . shell-script-mode)
 	 ("PKGBUILD\\.*\\'" . shell-script-mode)
-	 ("\\.md\\'" . markdown-mode))
+	 ("\\.md\\'"        . markdown-mode)
+	 (".js"             . js2-mode))
        auto-mode-alist))
 
 ;; haskell
+(require 'haskell-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 ;(add-hook 'haskell-mode-hook 'turn-on-hi2)
 
@@ -113,3 +121,7 @@
      (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
      (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
      (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
+
+;; Scala
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
