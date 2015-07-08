@@ -1,4 +1,0 @@
-# Android SDK
-if [[ -d "/opt/android-sdk/tools/" && -d "/opt/android-sdk/platform-tools/" ]]; then
-    path=("/opt/android-sdk/tools/" "/opt/android-sdk/platform-tools/" $path)
-fi
