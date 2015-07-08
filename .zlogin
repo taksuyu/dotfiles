@@ -8,4 +8,7 @@
     fi
 } &!
 
-echo "Welcome Back!"
+if [[ -e ~/doge ]]
+then
+    cat doge
+fi

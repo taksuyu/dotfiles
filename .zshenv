@@ -1,5 +1,5 @@
 export BROWSER='firefox'
-export EDITOR='emacs'
+export EDITOR='emacsnw'
 export PAGER='less'
 
 # GPG

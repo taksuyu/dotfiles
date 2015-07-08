@@ -1,28 +1,107 @@
+#### Start Prompt ####
+#fpath=( "~/.zfunctions" $fpath )
 autoload -U compinit promptinit
 
-# opts
-setopt auto_cd
-setopt complete_aliases
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_REDUCE_BLANKS
+compinit
+promptinit
 
-# history
-HISTFILE=~/.histfile
-HISTSIZE=50
-SAVEHIST=50
+PURE_PROMPT_SYMBOL=λ
 
-# git file completion
-function __git_files
+## for whatever reason it seems like loading though fpath is broken
+## for pure, so lets be direct about it.
+#prompt pure
+source ~/.zfunctions/async
+source ~/.zfunctions/prompt_pure_setup
+
+#### Start Functions ####
+function add_path
 {
-    _wanted files expl 'local files' _files
+    if [[ -d $1 ]]
+    then
+	path=( $1 $path )
+    fi
 }
 
-# init
-for script in `find ~/.shell`
-do
-    if [[ ! -d $script && ${script##*.} =~ (zsh|sh) ]]
-    then
-        source $script
-    fi
-done
-compinit
+#### Start Path ####
+# unique items in path
+typeset -U path
+
+# user programs
+add_path ~/.bin
+
+# cabal
+add_path ~/.cabal/bin
+
+# node
+add_path ~/node_modules/.bin
+
+# ruby
+## WARNING: This breaks everytime ruby is updated.
+
+## FIXME: Append a file with the current version if it isn't already
+## in it and add all those paths.
+add_path "`ruby -e 'print Gem.user_dir'`/bin"
+
+#### Start Highlighting ####
+highlight_source="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+if [[ -e highlight_source ]]
+then
+    source highlight_source
+    fpath=( /usr/share/zsh/site-functions $fpath )
+fi
+
+#### Start Alias ####
+# FIXME: I should turn this whole section into fpath functions so that
+# they get loaded lazily. I could abuse this along with some fancy
+# loading mechanics.
+
+# launchers
+alias e='$EDITOR'
+
+# file listing
+alias ls='ls --color'
+alias la='ls -a'
+alias l.='ls -d .*'
+alias ll='la -l'
+
+# Lock computer, disable monitor, and turn dpms off again on resume
+#alias monoff='xset dpms force off && slock && xset -dpms'
+
+# dateformat
+alias dateiso='date -u --iso-8601="seconds"'
+
+# sprunge
+alias sprunge='curl -F "sprunge=<-" http://sprunge.us'
+
+# vcsh
+if [[ -x =vcsh ]]
+then
+    alias dots='vcsh dotfiles status --untracked-files=no -bs'
+    alias dotc='vcsh dotfiles commit'
+    alias dotp='vcsh dotfiles push'
+    alias dotd='vcsh dotfiles diff'
+fi
+
+# cabal
+if [[ -x =cabal ]]
+then
+    alias ci='cabal install -j --enable-tests'
+    alias cio='ci --only-dependencies'
+    alias ch='cabal haddock'
+    alias ct='cabal test'
+    alias cb='cabal build'
+    alias ccb='clear; cabal build'
+    alias cr='cabal run'
+fi
+
+# git
+if [[ -x =git ]]
+then
+    alias gi='git init'
+    alias gcl='git clean'
+    alias gco='git commit'
+    alias ga='git add'
+    alias gpl='git pull'
+    alias gps='git push'
+fi
