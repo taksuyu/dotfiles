@@ -81,6 +81,7 @@ then
     alias dotc='vcsh dotfiles commit'
     alias dotp='vcsh dotfiles push'
     alias dotd='vcsh dotfiles diff'
+    alias dota='vcsh dotfiles add'
 fi
 
 # cabal
@@ -104,4 +105,5 @@ then
     alias ga='git add'
     alias gpl='git pull'
     alias gps='git push'
+    alias gst='git status'
 fi
