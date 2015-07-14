@@ -1,5 +1,5 @@
 #### Start Prompt ####
-#fpath=( "~/.zfunctions" $fpath )
+fpath=( "$HOME/.zfunctions" $fpath )
 autoload -U compinit promptinit
 
 compinit
@@ -7,11 +7,7 @@ promptinit
 
 PURE_PROMPT_SYMBOL=λ
 
-## for whatever reason it seems like loading though fpath is broken
-## for pure, so lets be direct about it.
-#prompt pure
-source ~/.zfunctions/async
-source ~/.zfunctions/prompt_pure_setup
+prompt pure
 
 #### Start Functions ####
 function add_path
@@ -26,8 +22,8 @@ function add_path
 # unique items in path
 typeset -U path
 
-# user programs
-add_path ~/.bin
+# local user programs
+add_path ~/.local/bin
 
 # cabal
 add_path ~/.cabal/bin
@@ -106,4 +102,5 @@ then
     alias gpl='git pull'
     alias gps='git push'
     alias gst='git status'
+    alias gch='git checkout'
 fi
