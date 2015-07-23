@@ -39,21 +39,13 @@ add_path ~/node_modules/.bin
 add_path "`ruby -e 'print Gem.user_dir'`/bin"
 
 #### Start Highlighting ####
-highlight_source="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
-if [[ -e highlight_source ]]
-then
-    source highlight_source
-    fpath=( /usr/share/zsh/site-functions $fpath )
-fi
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fpath=( /usr/share/zsh/site-functions $fpath )
 
 #### Start Alias ####
 # FIXME: I should turn this whole section into fpath functions so that
 # they get loaded lazily. I could abuse this along with some fancy
 # loading mechanics.
-
-# launchers
-alias e='$EDITOR'
 
 # file listing
 alias ls='ls --color'
@@ -69,6 +61,12 @@ alias dateiso='date -u --iso-8601="seconds"'
 
 # sprunge
 alias sprunge='curl -F "sprunge=<-" http://sprunge.us'
+
+# pacman
+if [[ -x =pacman ]]
+then
+    alias pac='sudo pacman'
+fi
 
 # vcsh
 if [[ -x =vcsh ]]
