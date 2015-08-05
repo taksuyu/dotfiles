@@ -20,6 +20,7 @@
 		       markdown-mode
 		       purescript-mode
 		       python-mode
+                       rust-mode
 		       shakespeare-mode
 		       ))
 
@@ -78,6 +79,21 @@
 ;; Here be dragons. ;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
+;; editing
+(defun insert-newline-after ()
+  (interactive)
+  (let ((oldpos (point)))
+    (end-of-line)
+    (newline-and-indent)))
+(global-set-key (kbd "<C-return>") 'insert-newline-after)
+
+(defun insert-newline-above ()
+  (interactive)
+  (let ((oldpos (point)))
+    (previous-line)
+    (end-of-line)
+    (newline-and-indent)))
+(global-set-key (kbd "<S-return>") 'insert-newline-above)
 
 ;; magit keys
 (require 'magit)
