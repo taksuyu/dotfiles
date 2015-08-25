@@ -29,7 +29,7 @@ function add_path
 }
 
 # Does the command exist?
-function FINDCOM
+function IFCOMMAND
 {
     [[ -x $(command -v $@) ]]
 }
@@ -45,23 +45,21 @@ typeset -U path
 # FIXME: Should be the only path I have to add.
 add_path ~/.local/bin
 
-<<<<<<< HEAD
 # stack ghc's
 add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
-=======
+
 # Cabal
 add_path ~/.cabal/bin
 
 # NPM
 add_path ~/node_modules/.bin
->>>>>>> ba8de26a84b4ee1635d26a2adf79c95c6e369511
 
 # Ruby
 ## WARNING: This is just so broken I can't even.
 
 ## FIXME: Append a file with the current version if it isn't already
 ## in it and add all those paths.
-if FINDCOM ruby
+if IFCOMMAND ruby
 then
     add_path "`ruby -e 'print Gem.user_dir'`/bin"
 fi
@@ -106,7 +104,7 @@ alias ll='la -l'
 alias dateiso='date -u --iso-8601="seconds"'
 
 # pacman
-if FINDCOM pacman
+if IFCOMMAND pacman
 then
     alias pac='sudo pacman'
     alias pacu='pac -Syu'
@@ -114,18 +112,26 @@ then
     alias pacq='pac -Qi'
 fi
 
-# vcsh
-if FINDCOM vcsh
+# pacaur
+if IFCOMMAND pacaur
 then
-    alias dots='vcsh dotfiles status --untracked-files=no -bs'
-    alias dotc='vcsh dotfiles commit'
-    alias dotp='vcsh dotfiles push'
-    alias dotd='vcsh dotfiles diff'
-    alias dota='vcsh dotfiles add'
+    # overwrite pacman's base alias
+    alias pac='pacaur'
+fi
+
+# vcsh
+if IFCOMMAND vcsh
+then
+    alias dot='vcsh dotfiles'
+    alias dots='dot status --untracked-files=no -bs'
+    alias dotc='dot commit'
+    alias dotp='dot push'
+    alias dotd='dot diff'
+    alias dota='dot add'
 fi
 
 # cabal
-if FINDCOM cabal
+if IFCOMMAND cabal
 then
     alias ci='cabal install -j --enable-tests'
     alias cio='ci --only-dependencies'
@@ -137,7 +143,7 @@ then
 fi
 
 # stack
-if [[ -x =stack ]]
+if IFCOMMAND stack
 then
     alias si='stack install'
     alias sb='stack build'
@@ -145,7 +151,7 @@ then
 fi
 
 # git
-if FINDCOM git
+if IFCOMMAND git
 then
     alias gi='git init'
     alias gcl='git clean'
@@ -158,12 +164,18 @@ then
 fi
 
 # make
-if FINDCOM make
+if IFCOMMAND make
 then
     alias make='make --quiet'
 fi
 
+################################################################################
+# Environment
+################################################################################
+
+# Archlinux's AUR puts android studio here
 ANDROID_HOME=/opt/android-sdk
+
 if [[ -d $ANDROID_HOME ]]
 then
     export ANDROID_HOME
