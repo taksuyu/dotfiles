@@ -12,10 +12,13 @@ prompt pure
 #### Start Functions ####
 function add_path
 {
-    if [[ -d $1 ]]
-    then
-	path=( $1 $path )
-    fi
+    for dir in $@
+    do
+        if [[ -d $dir ]]
+        then
+            path=( $dir $path )
+        fi
+    done
 }
 
 #### Start Path ####
@@ -25,11 +28,8 @@ typeset -U path
 # local user programs
 add_path ~/.local/bin
 
-# cabal
-add_path ~/.cabal/bin
-
-# node
-add_path ~/node_modules/.bin
+# stack ghc's
+add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
 
 # ruby
 ## WARNING: This breaks everytime ruby is updated.
@@ -59,9 +59,6 @@ alias ll='la -l'
 # dateformat
 alias dateiso='date -u --iso-8601="seconds"'
 
-# sprunge
-alias sprunge='curl -F "sprunge=<-" http://sprunge.us'
-
 # pacman
 if [[ -x =pacman ]]
 then
@@ -90,6 +87,14 @@ then
     alias cr='cabal run'
 fi
 
+# stack
+if [[ -x =stack ]]
+then
+    alias si='stack install'
+    alias sb='stack build'
+    alias st='stack test'
+fi
+
 # git
 if [[ -x =git ]]
 then
@@ -101,4 +106,16 @@ then
     alias gps='git push'
     alias gst='git status'
     alias gch='git checkout'
+fi
+
+# make
+if [[ -x =make ]]
+then
+    alias make='make --quiet'
+fi
+
+ANDROID_HOME=/opt/android-sdk
+if [[ -d $ANDROID_HOME ]]
+then
+    export ANDROID_HOME
 fi
