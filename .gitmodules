@@ -1,3 +1,6 @@
 [submodule ".shell-submodules/pure"]
 	path = .shell-submodules/pure
 	url = https://github.com/sindresorhus/pure.git
+[submodule ".emacs.d"]
+	path = .emacs.d
+	url = https://github.com/syl20bnr/spacemacs.git
