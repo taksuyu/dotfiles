@@ -29,7 +29,7 @@ function add_path
 }
 
 # Does the command exist?
-function IFCOMMAND
+function FINDCOM
 {
     [[ -x $(command -v $@) ]]
 }
@@ -120,7 +120,7 @@ then
 fi
 
 # vcsh
-if IFCOMMAND vcsh
+if FINDCOM vcsh
 then
     alias dot='vcsh dotfiles'
     alias dots='dot status --untracked-files=no -bs'
