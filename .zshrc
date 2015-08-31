@@ -46,13 +46,23 @@ typeset -U path
 add_path ~/.local/bin
 
 # stack ghc's
-add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
+if IFCOMMAND stack
+then
+    # Because I'm using an automcompletion feature here, it can break
+    add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
+fi
 
 # Cabal
-add_path ~/.cabal/bin
+if IFCOMMAND cabal
+then
+    add_path ~/.cabal/bin
+fi
 
 # NPM
-add_path ~/node_modules/.bin
+if IFCOMMAND npm
+then
+    add_path ~/node_modules/.bin
+fi
 
 # Ruby
 ## WARNING: This is just so broken I can't even.
