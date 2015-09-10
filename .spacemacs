@@ -22,16 +22,15 @@
      better-defaults
      emacs-lisp
      git
-     markdown
      (haskell :variables
-              ;;haskell-enable-shm-support t
-              ;;haskell-enable-hindent-style "johan-tibell"
+              haskell-process-type 'stack-ghci
               )
+     markdown
      org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; syntax-checking
+     syntax-checking
      rust
      version-control
      )
@@ -45,7 +44,9 @@
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
-   dotspacemacs-delete-orphan-packages t))
+   dotspacemacs-delete-orphan-packages t
+   )
+)
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -160,6 +161,9 @@ before layers configuration."
    dotspacemacs-default-package-repository nil
    )
   ;; User initialization goes here
+  (add-to-list 'exec-path "~/.local/bin/")
+  (autoload 'haskell-indentation-enable-show-indentations "haskell-indentation")
+  (autoload 'haskell-indentation-disable-show-indentations "haskell-indentation")
   )
 
 (defun dotspacemacs/config ()
@@ -169,8 +173,9 @@ initialization after layers configuration."
   ;; Project switch to Dired mode
   ;;(setq projectile-switch-project-action 'projectile-dired)
 
-  ;; Haskell compatiblity w/ stack
-  (setq haskell-process-type 'stack-ghci)
+  ;; Temporary fix for spacemacs breaking flycheck-haskell
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
   ;; Replace terrible S-RET functionality with Vim's o
   (defun insert-newline-after ()
@@ -197,10 +202,7 @@ initialization after layers configuration."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(safe-local-variable-values
-   (quote
-    ((haskell-process-use-ghci . t)
-     (haskell-indent-spaces . 4)))))
+ '(haskell-stylish-on-save t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
