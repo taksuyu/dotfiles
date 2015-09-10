@@ -46,11 +46,11 @@ typeset -U path
 add_path ~/.local/bin
 
 # stack ghc's
-if IFCOMMAND stack
-then
-    # Because I'm using an automcompletion feature here, it can break
-    add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
-fi
+# if IFCOMMAND stack
+# then
+#     # Because I'm using an automcompletion feature here, it can break
+#     add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
+# fi
 
 # Cabal
 if IFCOMMAND cabal
@@ -117,6 +117,7 @@ alias dateiso='date -u --iso-8601="seconds"'
 if IFCOMMAND pacman
 then
     alias pac='sudo pacman'
+    alias paci='pac -S'
     alias pacu='pac -Syu'
     alias pacs='pac -Ss'
     alias pacq='pac -Qi'
