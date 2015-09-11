@@ -106,6 +106,11 @@ then
     alias pacq='pac -Qi'
 fi
 
+if FINDCOM apt
+then
+    alias apt='sudo apt'
+fi
+
 # vcsh
 if FINDCOM vcsh
 then
