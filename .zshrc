@@ -19,14 +19,17 @@ prompt pure
 # If the path exists, then add it to the path
 function add_path
 {
-    if [[ -d $1 ]]
-    then
-	path=( $1 $path )
-    fi
+    for dir in $@
+    do
+        if [[ -d $dir ]]
+        then
+            path=( $dir $path )
+        fi
+    done
 }
 
 # Does the command exist?
-function FINDCOM
+function IFCOMMAND
 {
     [[ -x $(command -v $@) ]]
 }
@@ -42,18 +45,31 @@ typeset -U path
 # FIXME: Should be the only path I have to add.
 add_path ~/.local/bin
 
+# stack ghc's
+# if IFCOMMAND stack
+# then
+#     # Because I'm using an automcompletion feature here, it can break
+#     add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
+# fi
+
 # Cabal
-add_path ~/.cabal/bin
+if IFCOMMAND cabal
+then
+    add_path ~/.cabal/bin
+fi
 
 # NPM
-add_path ~/node_modules/.bin
+if IFCOMMAND npm
+then
+    add_path ~/node_modules/.bin
+fi
 
 # Ruby
 ## WARNING: This is just so broken I can't even.
 
 ## FIXME: Append a file with the current version if it isn't already
 ## in it and add all those paths.
-if FINDCOM ruby
+if IFCOMMAND ruby
 then
     add_path "`ruby -e 'print Gem.user_dir'`/bin"
 fi
@@ -98,21 +114,29 @@ alias ll='la -l'
 alias dateiso='date -u --iso-8601="seconds"'
 
 # pacman
-if FINDCOM pacman
+if IFCOMMAND pacman
 then
     alias pac='sudo pacman'
+    alias paci='pac -S'
     alias pacu='pac -Syu'
     alias pacs='pac -Ss'
     alias pacq='pac -Qi'
 fi
 
-if FINDCOM apt
+# pacaur
+if IFCOMMAND pacaur
+then
+    # overwrite pacman's base alias
+    alias pac='pacaur'
+fi
+
+if IFCOMMAND apt
 then
     alias apt='sudo apt'
 fi
 
 # vcsh
-if FINDCOM vcsh
+if IFCOMMAND vcsh
 then
     alias dots='vcsh dotfiles status --untracked-files=no -bs'
     alias dotc='vcsh dotfiles commit'
@@ -122,7 +146,7 @@ then
 fi
 
 # cabal
-if FINDCOM cabal
+if IFCOMMAND cabal
 then
     alias ci='cabal install -j --enable-tests'
     alias cio='ci --only-dependencies'
@@ -133,8 +157,16 @@ then
     alias cr='cabal run'
 fi
 
+# stack
+if IFCOMMAND stack
+then
+    alias si='stack install'
+    alias sb='stack build'
+    alias st='stack test'
+fi
+
 # git
-if FINDCOM git
+if IFCOMMAND git
 then
     alias gi='git init'
     alias gcl='git clean'
@@ -144,4 +176,22 @@ then
     alias gps='git push'
     alias gst='git status'
     alias gch='git checkout'
+fi
+
+# make
+if IFCOMMAND make
+then
+    alias make='make --quiet'
+fi
+
+################################################################################
+# Environment
+################################################################################
+
+# Archlinux's AUR puts android studio here
+ANDROID_HOME=/opt/android-sdk
+
+if [[ -d $ANDROID_HOME ]]
+then
+    export ANDROID_HOME
 fi
