@@ -17,28 +17,28 @@
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ansible
-     auto-completion
-     better-defaults
-     emacs-lisp
      git
-     (haskell :variables
-              haskell-process-type 'stack-ghci
-              )
      markdown
-     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-default-term-shell "/bin/zsh")
      syntax-checking
      rust
-     version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(elm-mode)
+   dotspacemacs-additional-packages '(elm-mode
+
+                                      ;; Haskell shim
+                                      flycheck-haskell
+                                      haskell-mode
+                                      hindent
+
+                                      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -162,8 +162,6 @@ before layers configuration."
    )
   ;; User initialization goes here
   (add-to-list 'exec-path "~/.local/bin/")
-  (autoload 'haskell-indentation-enable-show-indentations "haskell-indentation")
-  (autoload 'haskell-indentation-disable-show-indentations "haskell-indentation")
   )
 
 (defun dotspacemacs/config ()
@@ -173,7 +171,63 @@ initialization after layers configuration."
   ;; Project switch to Dired mode
   ;;(setq projectile-switch-project-action 'projectile-dired)
 
-  ;; Temporary fix for spacemacs breaking flycheck-haskell
+  ;; Haskell specific stuff
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  (add-hook 'haskell-mode-hook #'hindent-mode)
+
+  (evil-leader/set-key-for-mode 'haskell-mode
+    "mgg"  'haskell-mode-jump-to-def-or-tag
+    "mf"   'haskell-mode-stylish-buffer
+
+    "msb"  'haskell-process-load-or-reload
+    "msc"  'haskell-interactive-mode-clear
+    "mss"  'haskell-interactive-bring
+    "msS"  'haskell-interactive-switch
+
+    "mca"  'haskell-process-cabal
+    "mcb"  'haskell-process-cabal-build
+    "mcc"  'haskell-compile
+    "mcv"  'haskell-cabal-visit-file
+
+    "mhd"  'inferior-haskell-find-haddock
+    "mhh"  'hoogle
+    "mhi"  'haskell-process-do-info
+    "mht"  'haskell-process-do-type
+    "mhT"  'spacemacs/haskell-process-do-type-on-prev-line
+    "mhy"  'hayoo
+
+    "mdd"  'haskell-debug
+    "mdb"  'haskell-debug/break-on-function
+    "mdn"  'haskell-debug/next
+    "mdN"  'haskell-debug/previous
+    "mdB"  'haskell-debug/delete
+    "mdc"  'haskell-debug/continue
+    "mda"  'haskell-debug/abandon
+    "mdr"  'haskell-debug/refresh)
+
+  ;; Switch back to editor from REPL
+  (evil-leader/set-key-for-mode 'haskell-interactive-mode
+    "msS"  'haskell-interactive-switch)
+
+  ;; Compile
+  (evil-leader/set-key-for-mode 'haskell-cabal
+    "mC"  'haskell-compile)
+
+  ;; Cabal-file bindings
+  (evil-leader/set-key-for-mode 'haskell-cabal-mode
+    ;; "m="  'haskell-cabal-subsection-arrange-lines ;; Does a bad job, 'gg=G' works better
+    "md" 'haskell-cabal-add-dependency
+    "mb" 'haskell-cabal-goto-benchmark-section
+    "me" 'haskell-cabal-goto-executable-section
+    "mt" 'haskell-cabal-goto-test-suite-section
+    "mm" 'haskell-cabal-goto-exposed-modules
+    "ml" 'haskell-cabal-goto-library-section
+    "mn" 'haskell-cabal-next-subsection
+    "mp" 'haskell-cabal-previous-subsection
+    "mN" 'haskell-cabal-next-section
+    "mP" 'haskell-cabal-previous-section
+    "mf" 'haskell-cabal-find-or-create-source-file)
+
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
@@ -202,11 +256,21 @@ initialization after layers configuration."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(haskell-stylish-on-save t))
+ '(ahs-case-fold-search nil)
+ '(ahs-default-range (quote ahs-range-whole-buffer))
+ '(ahs-idle-interval 0.25)
+ '(ahs-idle-timer 0 t)
+ '(ahs-inhibit-face-list nil)
+ '(haskell-stylish-on-save t)
+ '(haskell-tags-on-save t)
+ '(hindent-style "chris-done")
+ '(ring-bell-function (quote ignore) t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(shm-current-face ((t (:background "#eee8d5"))))
+ '(shm-quarantine-face ((t (:background "lemonchiffon")))))
