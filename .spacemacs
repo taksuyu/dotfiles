@@ -19,9 +19,6 @@
      ;; ----------------------------------------------------------------
      git
      markdown
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
      (shell :variables
             shell-default-term-shell "/bin/zsh")
      syntax-checking
@@ -162,18 +159,18 @@ before layers configuration."
    )
   ;; User initialization goes here
   (add-to-list 'exec-path "~/.local/bin/")
+  (add-to-list 'load-path "~/git/stack-ide/stack-mode/")
   )
 
 (defun dotspacemacs/config ()
   "Configuration function.
 This function is called at the very end of Spacemacs
 initialization after layers configuration."
-  ;; Project switch to Dired mode
-  ;;(setq projectile-switch-project-action 'projectile-dired)
 
   ;; Haskell specific stuff
-  (add-hook 'haskell-mode-hook 'flycheck-mode)
-  (add-hook 'haskell-mode-hook #'hindent-mode)
+  (require 'stack-mode)
+  (add-hook 'haskell-mode-hook 'stack-mode)
+  (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
   (evil-leader/set-key-for-mode 'haskell-mode
     "mgg"  'haskell-mode-jump-to-def-or-tag
@@ -227,9 +224,6 @@ initialization after layers configuration."
     "mN" 'haskell-cabal-next-section
     "mP" 'haskell-cabal-previous-section
     "mf" 'haskell-cabal-find-or-create-source-file)
-
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
   ;; Replace terrible S-RET functionality with Vim's o
   (defun insert-newline-after ()
