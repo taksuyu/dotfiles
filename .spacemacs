@@ -171,6 +171,7 @@ initialization after layers configuration."
   (require 'stack-mode)
   (add-hook 'haskell-mode-hook 'stack-mode)
   (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+  (add-hook 'haskell-mode-hook #'hindent-mode)
 
   (evil-leader/set-key-for-mode 'haskell-mode
     "mgg"  'haskell-mode-jump-to-def-or-tag
@@ -225,6 +226,10 @@ initialization after layers configuration."
     "mP" 'haskell-cabal-previous-section
     "mf" 'haskell-cabal-find-or-create-source-file)
 
+  (setq haskell-stylish-on-save t)
+  (setq haskell-tags-on-save t)
+  (setq hindent-style "chris-done")
+
   ;; Replace terrible S-RET functionality with Vim's o
   (defun insert-newline-after ()
     (interactive)
@@ -241,30 +246,4 @@ initialization after layers configuration."
       (end-of-line)
       (newline-and-indent)))
   (global-set-key (kbd "<C-return>") 'insert-newline-above)
-)
-
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ahs-case-fold-search nil)
- '(ahs-default-range (quote ahs-range-whole-buffer))
- '(ahs-idle-interval 0.25)
- '(ahs-idle-timer 0 t)
- '(ahs-inhibit-face-list nil)
- '(haskell-stylish-on-save t)
- '(haskell-tags-on-save t)
- '(hindent-style "chris-done")
- '(ring-bell-function (quote ignore) t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
- '(shm-current-face ((t (:background "#eee8d5"))))
- '(shm-quarantine-face ((t (:background "lemonchiffon")))))
+  )
