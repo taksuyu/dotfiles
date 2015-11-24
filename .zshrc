@@ -13,68 +13,6 @@ PURE_PROMPT_SYMBOL=λ
 prompt pure
 
 ################################################################################
-# Functions
-################################################################################
-
-# If the path exists, then add it to the path
-function add_path
-{
-    for dir in $@
-    do
-        if [[ -d $dir ]]
-        then
-            path=( $dir $path )
-        fi
-    done
-}
-
-# Does the command exist?
-function IFCOMMAND
-{
-    [[ -x $(command -v $@) ]]
-}
-
-################################################################################
-# Path
-################################################################################
-
-# Only allow a directory be added to path if it isn't already on the path.
-typeset -U path
-
-# Local user programs
-# FIXME: Should be the only path I have to add.
-add_path ~/.local/bin
-
-# stack ghc's
-# if IFCOMMAND stack
-# then
-#     # Because I'm using an automcompletion feature here, it can break
-#     add_path ~/.stack/programs/x86_64-linux/ghc-*/bin
-# fi
-
-# Cabal
-if IFCOMMAND cabal
-then
-    add_path ~/.cabal/bin
-fi
-
-# NPM
-if IFCOMMAND npm
-then
-    add_path ~/node_modules/.bin
-fi
-
-# Ruby
-## WARNING: This is just so broken I can't even.
-
-## FIXME: Append a file with the current version if it isn't already
-## in it and add all those paths.
-if IFCOMMAND ruby
-then
-    add_path "`ruby -e 'print Gem.user_dir'`/bin"
-fi
-
-################################################################################
 # Highlighting
 ################################################################################
 
@@ -102,87 +40,96 @@ fpath=( /usr/share/zsh/site-functions $fpath )
 # loading mechanics.
 
 # file listing
-alias ls='ls --color'
-alias la='ls -a'
-alias l.='ls -d .*'
-alias ll='la -l'
+alias ls="ls --color"
+alias la="ls -a"
+alias l.="ls -d .*"
+alias ll="la -l"
 
 # Lock computer, disable monitor, and turn dpms off again on resume
 #alias monoff='xset dpms force off && slock && xset -dpms'
 
 # dateformat
-alias dateiso='date -u --iso-8601="seconds"'
+alias dateiso="date -u --iso-8601=\"seconds\""
 
-# pacman
-if IFCOMMAND pacman
-then
-    alias pac='sudo pacman'
-    alias paci='pac -S'
-    alias pacu='pac -Syu'
-    alias pacs='pac -Ss'
-    alias pacq='pac -Qi'
-fi
+{
+    # pacman
+    if IFCOMMAND pacman
+    then
+        alias pac="sudo pacman"
+        alias paci="pac -S"
+        alias pacu="pac -Syu"
+        alias pacs="pac -Ss"
+        alias pacq="pac -Qi"
+    fi
 
-# pacaur
-if IFCOMMAND pacaur
-then
-    # overwrite pacman's base alias
-    alias pac='pacaur'
-fi
+    # pacaur
+    if IFCOMMAND pacaur
+    then
+        # overwrite pacman's base alias
+        alias pac="pacaur"
+    fi
 
-if IFCOMMAND apt
-then
-    alias apt='sudo apt'
-fi
-
-# vcsh
-if IFCOMMAND vcsh
-then
-    alias dots='vcsh dotfiles status --untracked-files=no -bs'
-    alias dotc='vcsh dotfiles commit'
-    alias dotp='vcsh dotfiles push'
-    alias dotd='vcsh dotfiles diff'
-    alias dota='vcsh dotfiles add'
-fi
-
-# cabal
-if IFCOMMAND cabal
-then
-    alias ci='cabal install -j --enable-tests'
-    alias cio='ci --only-dependencies'
-    alias ch='cabal haddock'
-    alias ct='cabal test'
-    alias cb='cabal build'
-    alias ccb='clear; cabal build'
-    alias cr='cabal run'
-fi
-
-# stack
-if IFCOMMAND stack
-then
-    alias si='stack install'
-    alias sb='stack build'
-    alias st='stack test'
-fi
-
-# git
-if IFCOMMAND git
-then
-    alias gi='git init'
-    alias gcl='git clean'
-    alias gco='git commit'
-    alias ga='git add'
-    alias gpl='git pull'
-    alias gps='git push'
-    alias gst='git status'
-    alias gch='git checkout'
-fi
-
-# make
-if IFCOMMAND make
-then
-    alias make='make --quiet'
-fi
+    if IFCOMMAND apt
+    then
+        alias apt="sudo apt"
+    fi
+}
+{
+    # vcsh
+    if IFCOMMAND vcsh
+    then
+        local v="vcsh"
+        alias dots="$v dotfiles status --untracked-files=no -bs"
+        alias dotc="$v dotfiles commit"
+        alias dotp="$v dotfiles push"
+        alias dotd="$v dotfiles diff"
+        alias dota="$v dotfiles add"
+    fi
+}
+{
+    # cabal
+    if IFCOMMAND cabal
+    then
+        local c="cabal"
+        alias ci="$c install -j --enable-tests"
+        alias cio="ci --only-dependencies"
+        alias ch="$c haddock"
+        alias ct="$c test"
+        alias cb="$c build"
+        alias ccb="clear; $c build"
+        alias cr="$c run"
+    fi
+}
+{
+    # stack
+    if IFCOMMAND stack
+    then
+        local s="stack"
+        alias si="$s install"
+        alias sb="$s build"
+        alias sbh="sb --haddock"
+        alias sbt="sb --test"
+        alias sba="sb --haddock --test"
+        alias se="$s exec"
+        alias st="$s test"
+    fi
+}
+{
+    # git
+    if IFCOMMAND git
+    then
+        local g="git"
+        alias gi="$g init"
+        alias gcl="$g clean"
+        alias gco="$g commit"
+        alias ga="$g add"
+        alias gpl="$g pull"
+        alias gplr="gpl --rebase"
+        alias gps="$g push"
+        alias gst="$g status"
+        alias gch="$g checkout"
+    fi
+}
 
 ################################################################################
 # Environment

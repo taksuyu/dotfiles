@@ -17,12 +17,14 @@
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ansible
+     better-defaults
      git
-     haskell
+     (haskell :variables
+              haskell-enable-ghc-mod-support nil)
      markdown
+     org
      (shell :variables
-            shell-default-term-shell "/bin/zsh")
+            shell-default-term-shell "/usr/bin/zsh")
      syntax-checking
      rust
      )
@@ -31,7 +33,7 @@
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages '(elm-mode
-                                     )
+                                      hi2)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -153,22 +155,20 @@ before layers configuration."
    ;; Not used for now.
    dotspacemacs-default-package-repository nil
    )
-  ;; User initialization goes here
-  (add-to-list 'exec-path "~/.local/bin/")
-  )
+)
 
 (defun dotspacemacs/config ()
   "Configuration function.
 This function is called at the very end of Spacemacs
 initialization after layers configuration."
 
-  ;; Haskell specific stuff
-  (setq haskell-process-type 'stack-ghci)
-  ;; (require 'stack-mode)
-  ;; (add-hook 'haskell-mode-hook 'stack-mode)
+  (add-to-list 'exec-path "~/.local/bin")
 
-  ;; (setq haskell-stylish-on-save t)
-  ;; (setq haskell-tags-on-save t)
+  ;; Haskell
+  (setq haskell-stylish-on-save t)
+
+  (require 'hi2)
+  (add-hook 'haskell-mode-hook 'turn-on-hi2)
 
   ;; Replace terrible S-RET functionality with Vim's o
   (defun insert-newline-after ()
