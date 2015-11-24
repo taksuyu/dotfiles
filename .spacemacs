@@ -17,10 +17,14 @@
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     better-defaults
      git
+     (haskell :variables
+              haskell-enable-ghc-mod-support nil)
      markdown
+     org
      (shell :variables
-            shell-default-term-shell "/bin/zsh")
+            shell-default-term-shell "/usr/bin/zsh")
      syntax-checking
      rust
      )
@@ -29,14 +33,7 @@
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages '(elm-mode
-
-                                      ;; Haskell shim
-                                      flycheck-haskell
-                                      haskell-mode
-                                      hindent
-                                      stack-mode
-
-                                      )
+                                      hi2)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -158,78 +155,20 @@ before layers configuration."
    ;; Not used for now.
    dotspacemacs-default-package-repository nil
    )
-  ;; User initialization goes here
-  (add-to-list 'exec-path "~/.local/bin/")
-  (add-to-list 'load-path "~/git/stack-ide/stack-mode/")
-  )
+)
 
 (defun dotspacemacs/config ()
   "Configuration function.
 This function is called at the very end of Spacemacs
 initialization after layers configuration."
 
-  ;; Haskell specific stuff
-  (require 'stack-mode)
-  (add-hook 'haskell-mode-hook 'stack-mode)
-  (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
-  (add-hook 'haskell-mode-hook #'hindent-mode)
+  (add-to-list 'exec-path "~/.local/bin")
 
-  (evil-leader/set-key-for-mode 'haskell-mode
-    "mgg"  'haskell-mode-jump-to-def-or-tag
-    "mf"   'haskell-mode-stylish-buffer
-
-    "msb"  'haskell-process-load-or-reload
-    "msc"  'haskell-interactive-mode-clear
-    "mss"  'haskell-interactive-bring
-    "msS"  'haskell-interactive-switch
-
-    "mca"  'haskell-process-cabal
-    "mcb"  'haskell-process-cabal-build
-    "mcc"  'haskell-compile
-    "mcv"  'haskell-cabal-visit-file
-
-    "mhd"  'inferior-haskell-find-haddock
-    "mhh"  'hoogle
-    "mhi"  'haskell-process-do-info
-    "mht"  'haskell-process-do-type
-    "mhT"  'spacemacs/haskell-process-do-type-on-prev-line
-    "mhy"  'hayoo
-
-    "mdd"  'haskell-debug
-    "mdb"  'haskell-debug/break-on-function
-    "mdn"  'haskell-debug/next
-    "mdN"  'haskell-debug/previous
-    "mdB"  'haskell-debug/delete
-    "mdc"  'haskell-debug/continue
-    "mda"  'haskell-debug/abandon
-    "mdr"  'haskell-debug/refresh)
-
-  ;; Switch back to editor from REPL
-  (evil-leader/set-key-for-mode 'haskell-interactive-mode
-    "msS"  'haskell-interactive-switch)
-
-  ;; Compile
-  (evil-leader/set-key-for-mode 'haskell-cabal
-    "mC"  'haskell-compile)
-
-  ;; Cabal-file bindings
-  (evil-leader/set-key-for-mode 'haskell-cabal-mode
-    ;; "m="  'haskell-cabal-subsection-arrange-lines ;; Does a bad job, 'gg=G' works better
-    "md" 'haskell-cabal-add-dependency
-    "mb" 'haskell-cabal-goto-benchmark-section
-    "me" 'haskell-cabal-goto-executable-section
-    "mt" 'haskell-cabal-goto-test-suite-section
-    "mm" 'haskell-cabal-goto-exposed-modules
-    "ml" 'haskell-cabal-goto-library-section
-    "mn" 'haskell-cabal-next-subsection
-    "mp" 'haskell-cabal-previous-subsection
-    "mN" 'haskell-cabal-next-section
-    "mP" 'haskell-cabal-previous-section
-    "mf" 'haskell-cabal-find-or-create-source-file)
-
+  ;; Haskell
   (setq haskell-stylish-on-save t)
-  (setq haskell-tags-on-save t)
-  (setq hindent-style "chris-done")
+
+  (require 'hi2)
+  (add-hook 'haskell-mode-hook 'turn-on-hi2)
 
   ;; Replace terrible S-RET functionality with Vim's o
   (defun insert-newline-after ()

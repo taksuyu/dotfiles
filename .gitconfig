@@ -5,3 +5,5 @@
 	default = simple
 [credential]
 	helper = /usr/share/git/credential/gnome-keyring/git-credential-gnome-keyring
+[core]
+	excludesfile = ~/.gitignore
